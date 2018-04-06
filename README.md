@@ -1,0 +1,1 @@
+Docker image for Continuous Integration of Comunicare apps
