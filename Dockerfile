@@ -5,4 +5,4 @@ RUN apk update && \
 	apk --purge -v del py-pip && \
 	rm /var/cache/apk/*
 	
-RUN npm i -g npm && npm install -g cordova ionic mocha chai ts-node typescript	
+RUN npm i -g npm && npm install -g cordova ionic mocha chai ts-node typescript && npm cache clean
