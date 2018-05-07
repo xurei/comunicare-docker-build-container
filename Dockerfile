@@ -15,8 +15,7 @@ ENV ANDROID_HOME="/opt/android-sdk-linux" \
     SDK_TOOLS_VERSION="25.2.5" \
     API_LEVELS="android-27" \
     BUILD_TOOLS_VERSIONS="build-tools-27.0.3" \
-    ANDROID_EXTRAS="extra-android-m2repository,extra-android-support,extra-google-google_play_services,extra-google-m2repository" \
-    PATH="${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools"
+    ANDROID_EXTRAS="extra-android-m2repository,extra-android-support,extra-google-google_play_services,extra-google-m2repository"
 
 RUN mkdir -p ${ANDROID_HOME} && mkdir -p /tmp/android-install && cd /tmp/android-install && \
     wget -q http://dl.google.com/android/repository/tools_r${SDK_TOOLS_VERSION}-linux.zip -O android-sdk-tools.zip && \
@@ -25,3 +24,5 @@ RUN mkdir -p ${ANDROID_HOME} && mkdir -p /tmp/android-install && cd /tmp/android
     
 RUN rm -f android-sdk-tools.zip && \
     echo y | ${ANDROID_HOME}/tools/android update sdk --no-ui -a --filter tools,platform-tools,${ANDROID_EXTRAS},${API_LEVELS},${BUILD_TOOLS_VERSIONS} --no-https
+
+ENV PATH="${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools"
