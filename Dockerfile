@@ -2,6 +2,7 @@ FROM node:9.10.1-alpine
  
 RUN apk update && \
 	apk add --no-cache bash curl git openssh groff less python py-pip zip make g++ mongodb-tools mongodb unzip libstdc++ openjdk8 && \
+	apk add --no-cache ca-certificates wget && update-ca-certificates && \
 	apk --purge -v del py-pip && \
 	rm /var/cache/apk/*
 	
@@ -25,4 +26,16 @@ RUN mkdir -p ${ANDROID_HOME} && mkdir -p /tmp/android-install && cd /tmp/android
 RUN rm -f android-sdk-tools.zip && \
     echo y | ${ANDROID_HOME}/tools/android update sdk --no-ui -a --filter tools,platform-tools,${ANDROID_EXTRAS},${API_LEVELS},${BUILD_TOOLS_VERSIONS} --no-https
 
-ENV PATH="${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools"
+ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools
+
+# Install gradle
+ENV GRADLE_VERSION 4.7
+ENV GRADLE_HOME /usr/local/gradle
+ENV PATH ${PATH}:${GRADLE_HOME}/bin
+
+WORKDIR /usr/local
+RUN wget  https://services.gradle.org/distributions/gradle-$GRADLE_VERSION-bin.zip && \ 
+    unzip gradle-$GRADLE_VERSION-bin.zip && \
+    rm -f gradle-$GRADLE_VERSION-bin.zip && \
+    ln -s gradle-$GRADLE_VERSION gradle && \
+    echo -ne "- with Gradle $GRADLE_VERSION\n" >> /root/.built
